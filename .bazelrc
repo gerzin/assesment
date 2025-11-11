@@ -1,0 +1,14 @@
+# Enable C++23 globally
+build --cxxopt=-std=c++23
+build --host_cxxopt=-std=c++23
+
+# Additional C++ options
+build --cxxopt=-Wall
+build --cxxopt=-Wextra
+build --cxxopt=-Wpedantic
+
+# Performance
+build --jobs=auto
+
+# Compile commands refresh
+build --experimental_convenience_symlinks=normal
