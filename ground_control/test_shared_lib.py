@@ -1,125 +1,74 @@
-#!/usr/bin/env python3
 """
-Test the onboard shared library using ctypes.
-This demonstrates calling C++ code from Python via the C interface.
+Tests for the onboard shared library.
+Tests the Python-C++ interface via ctypes.
 """
 
-import ctypes
+import unittest
+import sys
 from pathlib import Path
-from typing import Optional
+
+sys.path.insert(0, str(Path(__file__).parent))
+
+from onboard_lib import OnboardLib
 
 
-class OnboardLib:
-    """Wrapper for the onboard shared library."""
-    
-    # Define the C structures and enums
-    class CErrorCode(ctypes.c_int):
-        C_OK = 0
-        C_INVALID_COMMAND = 1
-    
-    class CResult(ctypes.Structure):
-        _fields_ = [
-            ("data", ctypes.c_char_p),
-            ("error_code", ctypes.c_int),
-        ]
-    
-    def __init__(self, lib_path: Optional[str] = None):
-        """Initialize the library wrapper."""
-        if lib_path is None:
-            # Default to bazel-bin location
-            lib_path = Path(__file__).parent.parent / "bazel-bin" / "onboard" / "libonboard.so"
-        
-        self.lib_path = Path(lib_path)
-        if not self.lib_path.exists():
-            raise FileNotFoundError(f"Shared library not found: {self.lib_path}")
-        
-        # Load the shared library
-        self.lib = ctypes.CDLL(str(self.lib_path))
-        
-        # Configure the function signatures
-        self.lib.onboard_process_command_c.argtypes = [ctypes.c_char_p]
-        self.lib.onboard_process_command_c.restype = self.CResult
-        
-        self.lib.onboard_free_result.argtypes = [self.CResult]
-        self.lib.onboard_free_result.restype = None
-    
-    def process_command(self, command: str) -> dict:
-        """
-        Process a command through the onboard module.
-        
-        Args:
-            command: The command string to process
-            
-        Returns:
-            Dictionary with 'success' (bool), 'response' (str)
-        """
-        # Call the C function
-        result = self.lib.onboard_process_command_c(command.encode('utf-8'))
-        
-        # Extract the response
-        response = result.data.decode('utf-8') if result.data else ""
-        success = (result.error_code == self.CErrorCode.C_OK)
-        
-        # Free the allocated memory using the library's free function
-        self.lib.onboard_free_result(result)
-        
-        return {
-            'success': success,
-            'response': response,
-            'command': command
-        }
+class TestOnboardLib(unittest.TestCase):
+    """Test suite for OnboardLib wrapper."""
 
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixtures that are shared across all tests."""
+        cls.onboard = OnboardLib()
 
-def main():
-    """Test the shared library."""
-    print("=" * 60)
-    print("Onboard Shared Library Test (Python + ctypes)")
-    print("=" * 60)
-    print()
-    
-    try:
-        # Initialize the library
-        onboard = OnboardLib()
-        print(f"✓ Loaded library: {onboard.lib_path}")
-        print()
+    def test_valid_command_simple(self):
+        """Test processing a simple valid command."""
+        result = self.onboard.process_command("POWER_ON")
         
-        # Test commands
-        test_commands = [
-            "POWER_ON",
-            "SET_ALTITUDE 1000",
-            "GET_STATUS",
-            "DEPLOY_PAYLOAD",
-            "invalid@command!",  # Should fail - special character
-            "",  # Should fail - empty
-            "TEST-WITH_underscore",  # Should succeed
-        ]
+        self.assertTrue(result["success"])
+        self.assertEqual(result["response"], "ACK: POWER_ON")
+        self.assertEqual(result["command"], "POWER_ON")
+
+    def test_valid_command_with_spaces(self):
+        """Test processing a valid command with spaces."""
+        result = self.onboard.process_command("SET ALTITUDE 1000")
         
-        print("Testing commands:")
-        print("-" * 60)
+        self.assertTrue(result["success"])
+        self.assertEqual(result["response"], "ACK: SET ALTITUDE 1000")
+
+    def test_valid_command_with_underscore(self):
+        """Test processing a valid command with underscores."""
+        result = self.onboard.process_command("GET_STATUS")
         
-        for cmd in test_commands:
-            result = onboard.process_command(cmd)
-            status = "✓" if result['success'] else "✗"
-            print(f"\n{status} Command: '{cmd}'")
-            print(f"  Response: {result['response']}")
+        self.assertTrue(result["success"])
+        self.assertEqual(result["response"], "ACK: GET_STATUS")
+
+    def test_valid_command_with_hyphen(self):
+        """Test processing a valid command with hyphens."""
+        result = self.onboard.process_command("DEPLOY-PAYLOAD")
         
-        print("\n" + "-" * 60)
-        print("\n✅ All tests completed!")
+        self.assertTrue(result["success"])
+        self.assertEqual(result["response"], "ACK: DEPLOY-PAYLOAD")
+
+    def test_invalid_command_empty(self):
+        """Test processing an empty command."""
+        result = self.onboard.process_command("")
         
-    except FileNotFoundError as e:
-        print(f"✗ Error: {e}")
-        print("\nTo build the shared library:")
-        print("  bazel build //onboard:libonboard.so")
-        return 1
-    except Exception as e:
-        print(f"✗ Unexpected error: {e}")
-        import traceback
-        traceback.print_exc()
-        return 1
-    
-    return 0
+        self.assertFalse(result["success"])
+        self.assertEqual(result["response"], "NACK: Invalid command format")
+
+    def test_invalid_command_special_character(self):
+        """Test processing a command with special characters."""
+        result = self.onboard.process_command("invalid@command!")
+        
+        self.assertFalse(result["success"])
+        self.assertEqual(result["response"], "NACK: Invalid command format")
+
+    def test_library_not_found(self):
+        """Test that FileNotFoundError is raised when library doesn't exist."""
+        with self.assertRaises(FileNotFoundError):
+            OnboardLib(lib_path="/nonexistent/path/libonboard.so")
 
 
 if __name__ == "__main__":
-    import sys
-    sys.exit(main())
+    unittest.main()
+
