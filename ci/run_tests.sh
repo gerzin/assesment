@@ -9,12 +9,10 @@ echo "=========================================="
 echo ""
 
 # Run all tests in the workspace
-echo "🧪 Running C++ tests..."
-bazel test //onboard/tests:onboard_test --test_output=errors
-
-echo ""
-echo "🐍 Running Python tests..."
-bazel test //ground_control/tests:test_shared_lib --test_output=errors
+# Bazel will automatically discover and run all tests,
+# cache results, and only re-run what changed
+echo "🧪 Running all tests..."
+bazel test //... --test_output=errors
 
 echo ""
 echo "=========================================="

@@ -16,7 +16,10 @@ This directory contains continuous integration scripts for the project.
 
 - **`check_cpp_format.sh`** - Check C++ code formatting with clang-format
 - **`check_python_format.sh`** - Check Python code formatting with ruff
-- **`run_tests.sh`** - Run all tests (C++ and Python)
+- **`run_tests.sh`** - Run all tests using `bazel test //...`
+  - Automatically discovers all test targets
+  - Only re-runs tests affected by changes (Bazel caching)
+  - Runs tests in parallel for speed
 
 ### Formatting Tools
 
@@ -68,8 +71,7 @@ The CI pipeline is automated via GitHub Actions (`.github/workflows/ci.yml`).
 3. Install dependencies (clang-format, ruff)
 4. Check C++ formatting
 5. Check Python formatting
-6. Build all targets
-7. Run all tests
+6. Build and test all targets (single command)
 
 ## Requirements
 
@@ -90,6 +92,7 @@ The CI pipeline is automated via GitHub Actions (`.github/workflows/ci.yml`).
 ✅ **Incremental**: Only affected tests are re-run
 ✅ **Reproducible**: Hermetic builds ensure consistency
 ✅ **Fast**: Parallel execution of tests and builds
+✅ **Automatic Discovery**: No need to hardcode test paths - `bazel test //...` finds all tests
 
 ## Pre-commit Hooks
 

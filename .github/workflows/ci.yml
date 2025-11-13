@@ -44,14 +44,8 @@ jobs:
     - name: Check Python formatting
       run: bash ci/check_python_format.sh
 
-    - name: Build all targets
-      run: bazel build //...
-
-    - name: Run C++ tests
-      run: bazel test //onboard/tests:onboard_test --test_output=errors
-
-    - name: Run Python tests
-      run: bazel test //ground_control/tests:test_shared_lib --test_output=errors
+    - name: Build and test all targets
+      run: bazel test //... --test_output=errors
 
     - name: Test summary
       if: always()
