@@ -20,10 +20,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    auto command = program.get<std::string>("command");
+    auto command{program.get<std::string>("command")};
     spdlog::info("Starting the onboarding module with command: {}", command);
 
-    ob::Result result = ob::process_command(command);
+    ob::Result result{ob::process_command(command)};
 
     if (result.has_value())
     {
