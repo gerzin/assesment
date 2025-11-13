@@ -1,5 +1,5 @@
 #include <argparse/argparse.hpp>
-#include <print>
+#include <iostream>
 
 #include "onboard.hpp"
 #include "spdlog/spdlog.h"
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 
   if (result.has_value()) {
     spdlog::info("Onboard module response: {}", result.value());
-    std::print("{}", result.value());
+    std::cout << result.value() << std::endl;
   } else {
     spdlog::error("Onboard module error: Invalid command");
     return static_cast<int>(ob::ErrorCode::INVALID_COMMAND);
