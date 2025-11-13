@@ -16,6 +16,7 @@ This directory contains continuous integration scripts for the project.
 
 - **`check_cpp_format.sh`** - Check C++ code formatting with clang-format
 - **`check_python_format.sh`** - Check Python code formatting with ruff
+- **`check_bazel_format.sh`** - Check Bazel file formatting with buildifier
 - **`run_tests.sh`** - Run all tests using `bazel test //...`
   - Automatically discovers all test targets
   - Only re-runs tests affected by changes (Bazel caching)
@@ -25,6 +26,7 @@ This directory contains continuous integration scripts for the project.
 
 - **`format_cpp.sh`** - Auto-format C++ code with clang-format
 - **`format_python.sh`** - Auto-format Python code with ruff
+- **`format_bazel.sh`** - Auto-format Bazel files with buildifier
 
 ## Usage
 
@@ -43,6 +45,9 @@ This directory contains continuous integration scripts for the project.
 # Check Python formatting
 ./ci/check_python_format.sh
 
+# Check Bazel formatting
+./ci/check_bazel_format.sh
+
 # Run tests only
 ./ci/run_tests.sh
 ```
@@ -55,6 +60,9 @@ This directory contains continuous integration scripts for the project.
 
 # Format Python code
 ./ci/format_python.sh
+
+# Format Bazel files
+./ci/format_bazel.sh
 ```
 
 ## GitHub Actions
@@ -68,10 +76,11 @@ The CI pipeline is automated via GitHub Actions (`.github/workflows/ci.yml`).
 **Steps:**
 1. Checkout code
 2. Set up Bazel with caching
-3. Install dependencies (clang-format, ruff)
+3. Install dependencies (clang-format, ruff, buildifier)
 4. Check C++ formatting
 5. Check Python formatting
-6. Build and test all targets (single command)
+6. Check Bazel formatting
+7. Build and test all targets (single command)
 
 ## Requirements
 
@@ -80,6 +89,9 @@ The CI pipeline is automated via GitHub Actions (`.github/workflows/ci.yml`).
 
 ### Python Formatting
 - `ruff` (install: `pip install ruff` or use `uv`)
+
+### Bazel Formatting
+- `buildifier` (install: `go install github.com/bazelbuild/buildtools/buildifier@latest` or download from [releases](https://github.com/bazelbuild/buildtools/releases))
 
 ### Build & Test
 - Bazel (managed via bazelisk)

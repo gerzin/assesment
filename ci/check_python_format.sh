@@ -9,7 +9,7 @@ echo "=========================================="
 echo ""
 
 # Find all Python files
-PYTHON_FILES=$(find ground_control -type f -name "*.py")
+PYTHON_FILES=$(find ground_control -type f -name "*.py" ! -path "*/.venv/*" ! -path "*/__pycache__/*")
 
 if [ -z "$PYTHON_FILES" ]; then
     echo "No Python files found to format"

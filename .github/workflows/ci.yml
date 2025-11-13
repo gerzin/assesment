@@ -28,6 +28,10 @@ jobs:
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
         pip3 install ruff
+        # Install buildifier for Bazel formatting
+        wget -O /tmp/buildifier https://github.com/bazelbuild/buildtools/releases/download/v7.3.1/buildifier-linux-amd64
+        chmod +x /tmp/buildifier
+        sudo mv /tmp/buildifier /usr/local/bin/buildifier
 
     - name: Cache Bazel
       uses: actions/cache@v4
@@ -43,6 +47,9 @@ jobs:
 
     - name: Check Python formatting
       run: bash ci/check_python_format.sh
+
+    - name: Check Bazel formatting
+      run: bash ci/check_bazel_format.sh
 
     - name: Build and test all targets
       run: bazel test //... --test_output=errors
