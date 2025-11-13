@@ -1,0 +1,13 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "onboard_test",
+    size = "small",
+    srcs = ["onboard_test.cpp"],
+    copts = ["-std=c++23"],
+    deps = [
+        "//onboard:onboard_lib",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
