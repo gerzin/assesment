@@ -8,8 +8,14 @@ echo "Checking C++ Code Formatting"
 echo "=========================================="
 echo ""
 
-# Find all C++ files
-CPP_FILES=$(find onboard third_party/argparse -type f \( -name "*.cpp" -o -name "*.hpp" \) ! -path "*/third_party/argparse/include/*")
+# Find all C++ files (exclude third_party, bazel-*, and hidden directories)
+CPP_FILES=$(find . -type f \
+    \( -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" -o -name "*.cxx" -o -name "*.hxx" -o -name "*.c++" -o -name "*.h++" \) \
+    ! -path "./third_party/*" \
+    ! -path "./bazel-*" \
+    ! -path "./.git/*" \
+    ! -path "*/.venv/*" \
+    ! -path "*/__pycache__/*")
 
 if [ -z "$CPP_FILES" ]; then
     echo "No C++ files found to format"
