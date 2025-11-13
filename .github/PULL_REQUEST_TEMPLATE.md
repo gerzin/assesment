@@ -18,29 +18,9 @@
 ## Changes Made
 <!-- Provide a detailed list of changes -->
 
-- 
-- 
-- 
 
 ## Testing
 <!-- Describe the tests you ran to verify your changes -->
-
-### Build Status
-- [ ] C++ code compiles successfully (`bazel build //...`)
-- [ ] Python code runs without errors
-- [ ] All existing tests pass
-- [ ] New tests added (if applicable)
-
-### Test Commands
-```bash
-# Build commands used
-bazel build //onboard:onboard_app
-bazel build //onboard:libonboard.so
-
-# Test commands used
-bazel test //onboard/tests:...
-python3 ground_control/test_shared_lib.py
-```
 
 ## Checklist
 <!-- Mark completed items with an "x" -->
@@ -56,9 +36,6 @@ python3 ground_control/test_shared_lib.py
 ## Screenshots/Output
 <!-- If applicable, add screenshots or command output to demonstrate the changes -->
 
-```
-# Example output here
-```
 
 ## Additional Notes
 <!-- Add any additional context or notes for reviewers -->
