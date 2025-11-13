@@ -22,7 +22,8 @@ assesment/
 ├── ground_control/       # Python ground control
 │   ├── main.py           # Main application
 │   ├── onboard_lib.py    # ctypes wrapper
-│   └── test_shared_lib.py # Unit tests
+│   └── tests/            # Unit tests
+│       └── test_shared_lib.py
 ├── ci/                   # CI scripts and docs
 └── third_party/          # External dependencies
     └── argparse/         # Command-line parsing
@@ -40,7 +41,7 @@ bazel build //...
 bazel test //onboard/tests:onboard_test
 
 # Run Python tests
-bazel test //ground_control:test_shared_lib
+bazel test //ground_control/tests:test_shared_lib
 ```
 
 ### Run Onboard Module
@@ -131,7 +132,7 @@ Tests cover:
 ### Python Tests (unittest)
 
 ```bash
-bazel test //ground_control:test_shared_lib --test_output=all
+bazel test //ground_control/tests:test_shared_lib --test_output=all
 ```
 
 Tests cover:

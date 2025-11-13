@@ -1,0 +1,12 @@
+load("@rules_python//python:defs.bzl", "py_test")
+
+py_test(
+    name = "test_shared_lib",
+    size = "small",
+    srcs = [
+        "__init__.py",
+        "test_shared_lib.py",
+    ],
+    data = ["//onboard:libonboard.so"],
+    deps = ["//ground_control:onboard_lib_py"],
+)

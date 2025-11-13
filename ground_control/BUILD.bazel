@@ -1,4 +1,4 @@
-load("@rules_python//python:defs.bzl", "py_binary", "py_library", "py_test")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
 py_library(
     name = "onboard_lib_py",
@@ -15,13 +15,5 @@ py_binary(
     srcs = ["main.py"],
     data = ["//onboard:libonboard.so"],
     main = "main.py",
-    deps = [":onboard_lib_py"],
-)
-
-py_test(
-    name = "test_shared_lib",
-    size = "small",
-    srcs = ["test_shared_lib.py"],
-    data = ["//onboard:libonboard.so"],
     deps = [":onboard_lib_py"],
 )

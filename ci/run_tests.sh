@@ -14,7 +14,7 @@ bazel test //onboard/tests:onboard_test --test_output=errors
 
 echo ""
 echo "🐍 Running Python tests..."
-bazel test //ground_control:test_shared_lib --test_output=errors
+bazel test //ground_control/tests:test_shared_lib --test_output=errors
 
 echo ""
 echo "=========================================="

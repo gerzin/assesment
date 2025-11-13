@@ -51,7 +51,7 @@ jobs:
       run: bazel test //onboard/tests:onboard_test --test_output=errors
 
     - name: Run Python tests
-      run: bazel test //ground_control:test_shared_lib --test_output=errors
+      run: bazel test //ground_control/tests:test_shared_lib --test_output=errors
 
     - name: Test summary
       if: always()
@@ -64,9 +64,9 @@ jobs:
           tail -20 bazel-testlogs/onboard/tests/onboard_test/test.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
         fi
-        if [ -f bazel-testlogs/ground_control/test_shared_lib/test.log ]; then
+        if [ -f bazel-testlogs/ground_control/tests/test_shared_lib/test.log ]; then
           echo "### Python Tests" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -20 bazel-testlogs/ground_control/test_shared_lib/test.log >> $GITHUB_STEP_SUMMARY
+          tail -20 bazel-testlogs/ground_control/tests/test_shared_lib/test.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
         fi

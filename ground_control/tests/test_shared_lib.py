@@ -3,13 +3,9 @@ Tests for the onboard shared library.
 Tests the Python-C++ interface via ctypes.
 """
 
-import sys
 import unittest
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-from onboard_lib import OnboardLib
+from ground_control.onboard_lib import OnboardLib
 
 
 class TestOnboardLib(unittest.TestCase):
