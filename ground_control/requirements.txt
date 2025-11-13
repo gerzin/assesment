@@ -1,1 +1,5 @@
-pytest
+# Python dependencies for ground_control
+# This file is used by rules_uv to manage dependencies
+
+# Testing (no longer needed as we use unittest, but keeping for future)
+# pytest
