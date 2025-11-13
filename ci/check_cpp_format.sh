@@ -8,7 +8,7 @@ echo "Checking C++ Code Formatting"
 echo "=========================================="
 echo ""
 
-# Find all C++ files (exclude third_party, bazel-*, and hidden directories)
+# Find all C++ files (exclude third_party, bazel-*, and other specified directories)
 CPP_FILES=$(find . -type f \
     \( -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" -o -name "*.cxx" -o -name "*.hxx" -o -name "*.c++" -o -name "*.h++" \) \
     ! -path "./third_party/*" \
