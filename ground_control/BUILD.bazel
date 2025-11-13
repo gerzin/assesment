@@ -1,0 +1,27 @@
+load("@rules_python//python:defs.bzl", "py_binary", "py_library", "py_test")
+
+py_library(
+    name = "onboard_lib_py",
+    srcs = [
+        "__init__.py",
+        "onboard_lib.py",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [],
+)
+
+py_binary(
+    name = "ground_control",
+    srcs = ["main.py"],
+    data = ["//onboard:libonboard.so"],
+    main = "main.py",
+    deps = [":onboard_lib_py"],
+)
+
+py_test(
+    name = "test_shared_lib",
+    size = "small",
+    srcs = ["test_shared_lib.py"],
+    data = ["//onboard:libonboard.so"],
+    deps = [":onboard_lib_py"],
+)
