@@ -23,7 +23,7 @@ echo ""
 # Check if ruff is installed
 if ! command -v ruff &> /dev/null; then
     echo "⚠️  ruff not found. Trying to use from uv..."
-    
+
     # Try using uv if available
     if command -v uv &> /dev/null; then
         cd ground_control

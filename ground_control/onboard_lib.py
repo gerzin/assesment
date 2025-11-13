@@ -5,7 +5,6 @@ Provides Python interface to C++ onboard module via ctypes.
 
 import ctypes
 from pathlib import Path
-from typing import Optional
 
 
 class OnboardLib:
@@ -21,24 +20,24 @@ class OnboardLib:
             ("error_code", ctypes.c_int),
         ]
 
-    def __init__(self, lib_path: Optional[str | Path] = None):
+    def __init__(self, lib_path: str | Path | None = None):
         """Initialize the library wrapper."""
         if lib_path is None:
             # Try to find library in Bazel runfiles or standard location
             current_dir = Path(__file__).parent
-            
+
             possible_paths = [
                 current_dir.parent / "onboard" / "libonboard.so",
                 current_dir / "libonboard.so",
                 current_dir.parent / "bazel-bin" / "onboard" / "libonboard.so",
             ]
-            
+
             lib_path = None
             for path in possible_paths:
                 if path.exists():
                     lib_path = path
                     break
-            
+
             if lib_path is None:
                 raise FileNotFoundError(
                     f"Shared library not found. Tried: {[str(p) for p in possible_paths]}"

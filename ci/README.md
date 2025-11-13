@@ -8,7 +8,7 @@ This directory contains continuous integration scripts for the project.
 
 - **`run_ci.sh`** - Main CI script that runs all checks in sequence
   - C++ formatting check
-  - Python formatting check  
+  - Python formatting check
   - Build all targets
   - Run all tests
 
@@ -86,14 +86,42 @@ The CI pipeline is automated via GitHub Actions (`.github/workflows/ci.yml`).
 
 ## Bazel Benefits for CI
 
-✅ **Caching**: Bazel caches test results and only rebuilds changed targets  
-✅ **Incremental**: Only affected tests are re-run  
-✅ **Reproducible**: Hermetic builds ensure consistency  
-✅ **Fast**: Parallel execution of tests and builds  
+✅ **Caching**: Bazel caches test results and only rebuilds changed targets
+✅ **Incremental**: Only affected tests are re-run
+✅ **Reproducible**: Hermetic builds ensure consistency
+✅ **Fast**: Parallel execution of tests and builds
+
+## Pre-commit Hooks
+
+**Recommended:** Install pre-commit hooks to automatically check formatting before committing:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install the git hooks
+pre-commit install
+
+# (Optional) Run on all files manually
+pre-commit run --all-files
+```
+
+Once installed, the hooks will automatically run on staged files when you commit. This catches formatting issues before they reach CI.
+
+### What Gets Checked
+
+- **C++ files**: Formatted with clang-format
+- **Python files**: Formatted and linted with ruff
+- **Bazel files**: Formatted with buildifier
+- **General**: Trailing whitespace, end-of-file, YAML syntax, merge conflicts
 
 ## Local Development
 
-Before pushing code, run the full CI pipeline locally:
+Before pushing code, you can either:
+
+**Option 1 (Recommended):** Use pre-commit hooks (see above)
+
+**Option 2:** Run the full CI pipeline manually:
 
 ```bash
 ./ci/run_ci.sh

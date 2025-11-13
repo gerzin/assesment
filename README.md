@@ -1,0 +1,222 @@
+# Onboard Communication System
+
+A C++23 onboard communication module with Python ground control integration.
+
+## Features
+
+- **Modern C++23**: Uses `std::expected`, `std::string_view`, `std::ranges`, `std::format`
+- **Dual Interface**: Shared library (`.so`) and standalone executable
+- **Python Integration**: ctypes wrapper for seamless Python-C++ communication
+- **Comprehensive Testing**: Google Test (C++) and unittest (Python) suites
+- **CI/CD Ready**: GitHub Actions with formatting checks and automated testing
+
+## Project Structure
+
+```
+assesment/
+├── onboard/              # C++ onboard module
+│   ├── onboard.hpp       # Public API (C++ and C interfaces)
+│   ├── onboard.cpp       # Implementation
+│   ├── main.cpp          # CLI executable
+│   └── tests/            # Google Test suite
+├── ground_control/       # Python ground control
+│   ├── main.py           # Main application
+│   ├── onboard_lib.py    # ctypes wrapper
+│   └── test_shared_lib.py # Unit tests
+├── ci/                   # CI scripts and docs
+└── third_party/          # External dependencies
+    └── argparse/         # Command-line parsing
+```
+
+## Quick Start
+
+### Build Everything
+
+```bash
+# Build all targets
+bazel build //...
+
+# Run C++ tests
+bazel test //onboard/tests:onboard_test
+
+# Run Python tests
+bazel test //ground_control:test_shared_lib
+```
+
+### Run Onboard Module
+
+```bash
+# Run as executable
+bazel run //onboard:onboard_app -- "TEST_COMMAND_123"
+
+# Or build and run directly
+bazel build //onboard:onboard_app
+./bazel-bin/onboard/onboard_app "TEST_COMMAND_123"
+```
+
+### Run Ground Control
+
+```bash
+bazel run //ground_control:ground_control -- "MY_COMMAND_456"
+```
+
+## Development Setup
+
+### Prerequisites
+
+- **Bazel** (or bazelisk)
+- **GCC** with C++23 support
+- **Python 3.13**
+- **clang-format** (for C++ formatting)
+- **ruff** (for Python formatting)
+
+### Install Pre-commit Hooks (Recommended)
+
+Pre-commit hooks automatically check code formatting before commits:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install git hooks
+pre-commit install
+
+# (Optional) Run on all files
+pre-commit run --all-files
+```
+
+The hooks will:
+- Format C++ code with clang-format
+- Format and lint Python code with ruff
+- Format Bazel files with buildifier
+- Check for trailing whitespace, YAML syntax, etc.
+
+### Manual Formatting
+
+If you prefer not to use pre-commit hooks:
+
+```bash
+# Format C++ code
+./ci/format_cpp.sh
+
+# Format Python code
+./ci/format_python.sh
+```
+
+## Testing
+
+### Run All Tests
+
+```bash
+# Via CI script (recommended)
+./ci/run_tests.sh
+
+# Or directly with Bazel
+bazel test //...
+```
+
+### C++ Tests (Google Test)
+
+```bash
+bazel test //onboard/tests:onboard_test --test_output=all
+```
+
+Tests cover:
+- Valid command processing
+- Invalid command handling
+- Empty string handling
+- C interface functionality
+- Memory management
+
+### Python Tests (unittest)
+
+```bash
+bazel test //ground_control:test_shared_lib --test_output=all
+```
+
+Tests cover:
+- Shared library loading
+- Valid/invalid command processing
+- Error handling
+- ctypes integration
+
+## CI/CD
+
+### GitHub Actions
+
+The project uses GitHub Actions for continuous integration. The workflow runs on:
+- Push to `main`, `develop`, or `module/*`, `feature/*` branches
+- Pull requests to `main` or `develop`
+
+**CI Steps:**
+1. C++ formatting check (clang-format)
+2. Python formatting check (ruff)
+3. Build all targets
+4. Run all tests
+
+### Local CI
+
+Run the full CI pipeline locally before pushing:
+
+```bash
+./ci/run_ci.sh
+```
+
+See [ci/README.md](ci/README.md) for detailed CI documentation.
+
+## API Documentation
+
+### C++ API
+
+```cpp
+#include "onboard/onboard.hpp"
+
+// Process a command (returns std::expected)
+auto result = onboard::process_command("TEST_CMD_123");
+if (result) {
+    std::cout << result.value() << "\n";  // "ACK: TEST_CMD_123"
+} else {
+    std::cerr << "Error: " << static_cast<int>(result.error()) << "\n";
+}
+```
+
+### C API (for Python/FFI)
+
+```cpp
+#include "onboard/onboard.hpp"
+
+CResult result = onboard_process_command_c("TEST_CMD_123");
+if (result.is_success) {
+    printf("%s\n", result.message);
+    onboard_free_result(result);  // Free memory
+}
+```
+
+### Python API
+
+```python
+from ground_control.onboard_lib import OnboardLib
+
+lib = OnboardLib()
+result = lib.process_command("TEST_CMD_123")
+print(result)  # "ACK: TEST_CMD_123"
+```
+
+## Command Format
+
+Valid commands must:
+- Contain only uppercase letters, digits, and underscores
+- Be non-empty
+- Match regex: `^[A-Z0-9_]+$`
+
+**Examples:**
+- ✅ `TEST_COMMAND_123`
+- ✅ `CMD_456`
+- ✅ `SYSTEM_REBOOT`
+- ❌ `test` (lowercase)
+- ❌ `CMD-123` (hyphen not allowed)
+- ❌ `cmd with spaces`
+
+## License
+
+See LICENSE file for details.
