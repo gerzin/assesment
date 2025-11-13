@@ -46,10 +46,10 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo "Step 3/4: Build All Targets"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
-echo "🔨 Building all targets with Bazel..."
+echo "Building all targets with Bazel..."
 if bazel build //...; then
     echo ""
-    echo "✅ All targets built successfully"
+    echo "All targets built successfully"
 else
     FAILED_CHECKS+=("Build")
 fi
@@ -73,19 +73,19 @@ echo "=========================================="
 echo ""
 
 if [ ${#FAILED_CHECKS[@]} -eq 0 ]; then
-    echo "✅ All checks passed!"
+    echo "All checks passed!"
     echo ""
-    echo "  ✅ C++ formatting"
-    echo "  ✅ Python formatting"
-    echo "  ✅ Build"
-    echo "  ✅ Tests"
+    echo "  [PASS] C++ formatting"
+    echo "  [PASS] Python formatting"
+    echo "  [PASS] Build"
+    echo "  [PASS] Tests"
     echo ""
     exit 0
 else
-    echo "❌ ${#FAILED_CHECKS[@]} check(s) failed:"
+    echo "ERROR: ${#FAILED_CHECKS[@]} check(s) failed:"
     echo ""
     for check in "${FAILED_CHECKS[@]}"; do
-        echo "  ❌ $check"
+        echo "  [FAIL] $check"
     done
     echo ""
     exit 1

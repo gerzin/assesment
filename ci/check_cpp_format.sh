@@ -18,7 +18,7 @@ fi
 
 # Check if clang-format is installed
 if ! command -v clang-format &> /dev/null; then
-    echo "⚠️  clang-format not found. Skipping C++ formatting check."
+    echo "WARNING: clang-format not found. Skipping C++ formatting check."
     echo "Install with: sudo apt-get install clang-format"
     exit 0
 fi
@@ -31,23 +31,23 @@ echo ""
 NEEDS_FORMAT=0
 for file in $CPP_FILES; do
     if ! clang-format --dry-run --Werror "$file" 2>/dev/null; then
-        echo "❌ $file needs formatting"
+        echo "FAIL: $file needs formatting"
         NEEDS_FORMAT=1
     else
-        echo "✅ $file"
+        echo "PASS: $file"
     fi
 done
 
 echo ""
 if [ $NEEDS_FORMAT -eq 1 ]; then
     echo "=========================================="
-    echo "❌ Some files need formatting"
+    echo "ERROR: Some files need formatting"
     echo "=========================================="
     echo ""
     echo "To fix, run: ci/format_cpp.sh"
     exit 1
 else
     echo "=========================================="
-    echo "✅ All C++ files are properly formatted"
+    echo "All C++ files are properly formatted"
     echo "=========================================="
 fi

@@ -18,18 +18,18 @@ fi
 
 # Check if clang-format is installed
 if ! command -v clang-format &> /dev/null; then
-    echo "❌ clang-format not found"
+    echo "ERROR: clang-format not found"
     echo "Install with: sudo apt-get install clang-format"
     exit 1
 fi
 
 echo "Formatting files:"
 for file in $CPP_FILES; do
-    echo "  📝 $file"
+    echo "  $file"
     clang-format -i "$file"
 done
 
 echo ""
 echo "=========================================="
-echo "✅ C++ files formatted successfully"
+echo "C++ files formatted successfully"
 echo "=========================================="
