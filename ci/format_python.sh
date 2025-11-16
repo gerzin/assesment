@@ -12,7 +12,6 @@ echo ""
 if ! command -v ruff &> /dev/null; then
     echo "WARNING: ruff not found. Trying to use from uv..."
 
-    # Try using uv if available
     if command -v uv &> /dev/null; then
         cd ground_control
         echo "Using ruff via uv..."
@@ -28,7 +27,6 @@ if ! command -v ruff &> /dev/null; then
     fi
 fi
 
-# Format with ruff
 echo "Formatting Python files..."
 ruff format ground_control
 

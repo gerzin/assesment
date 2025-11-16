@@ -3,7 +3,6 @@
 # Run manually: pre-commit run --all-files
 
 repos:
-  # C++ formatting with clang-format
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v19.1.4
     hooks:
@@ -11,17 +10,14 @@ repos:
         files: \.(cpp|hpp|h|c|cc|cxx)$
         args: ['-i']
 
-  # Python formatting and linting with ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.2
     hooks:
-      # Run the linter
       - id: ruff
         args: [--fix]
-      # Run the formatter
       - id: ruff-format
 
-  # Generic checks
+  # Generic checks in the per-commit repo
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:

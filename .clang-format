@@ -3,7 +3,7 @@
 
 BasedOnStyle: Google
 Language: Cpp
-Standard: c++20
+Standard: c++20 # Il progetto usa C++23 ma non è ancora supportato da clang-format
 
 # Indentation
 IndentWidth: 2

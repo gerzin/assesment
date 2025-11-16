@@ -22,7 +22,9 @@ assesment/
 │   └── tests/            # Google Test suite
 ├── ground_control/       # Python ground control
 │   ├── main.py           # Main application
-│   ├── onboard_lib.py    # ctypes wrapper
+│   ├── onboard/          # Onboard client module
+│   │   ├── __init__.py   # Module exports
+│   │   └── client.py     # ctypes wrapper for C++ library
 │   └── tests/            # Unit tests
 │       └── test_shared_lib.py
 ├── ci/                   # CI scripts and docs
@@ -220,11 +222,11 @@ if (result.is_success) {
 ### Python API
 
 ```python
-from ground_control.onboard_lib import OnboardLib
+from ground_control.onboard import OnboardLib
 
 lib = OnboardLib()
 result = lib.process_command("TEST_CMD_123")
-print(result)  # "ACK: TEST_CMD_123"
+print(result)  # {"success": True, "response": "ACK: TEST_CMD_123", "command": "TEST_CMD_123"}
 ```
 
 ## Command Format

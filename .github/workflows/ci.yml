@@ -54,6 +54,78 @@ jobs:
     - name: Build and test all targets
       run: bazel test //... --test_output=errors
 
+    - name: Build C++ executables
+      run: |
+        bazel build //onboard:onboard_app
+        bazel build //onboard:libonboard.so
+
+    - name: Run coverage analysis
+      continue-on-error: true
+      run: ./ci/run_coverage.sh
+
+    - name: Collect artifacts
+      if: always()
+      run: |
+        mkdir -p artifacts/executables
+        mkdir -p artifacts/test-logs
+        mkdir -p artifacts/coverage
+
+        # Copy executables
+        cp -L bazel-bin/onboard/onboard_app artifacts/executables/ || true
+        cp -L bazel-bin/onboard/libonboard.so artifacts/executables/ || true
+
+        # Copy test logs
+        find bazel-testlogs -name "test.log" -exec cp --parents {} artifacts/test-logs/ \; || true
+        find bazel-testlogs -name "test.xml" -exec cp --parents {} artifacts/test-logs/ \; || true
+
+        # Copy coverage reports
+        if [ -f bazel-out/_coverage/_coverage_report.dat ]; then
+          cp bazel-out/_coverage/_coverage_report.dat artifacts/coverage/ || true
+        fi
+        if [ -d bazel-out/_coverage ]; then
+          find bazel-out/_coverage -name "*.gcov" -exec cp --parents {} artifacts/coverage/ \; || true
+        fi
+
+        # Create summary file
+        cat > artifacts/build-info.txt <<EOF
+        Build Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        Git Branch: ${{ github.ref_name }}
+        Git Commit: ${{ github.sha }}
+        Workflow Run: ${{ github.run_number }}
+        EOF
+
+    - name: Upload executables
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: executables-${{ github.run_number }}
+        path: artifacts/executables/
+        retention-days: 30
+
+    - name: Upload test logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-logs-${{ github.run_number }}
+        path: artifacts/test-logs/
+        retention-days: 30
+
+    - name: Upload coverage reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-reports-${{ github.run_number }}
+        path: artifacts/coverage/
+        retention-days: 30
+
+    - name: Upload build info
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-info-${{ github.run_number }}
+        path: artifacts/build-info.txt
+        retention-days: 30
+
     - name: Test summary
       if: always()
       run: |
@@ -71,3 +143,9 @@ jobs:
           tail -20 bazel-testlogs/ground_control/tests/test_shared_lib/test.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
         fi
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "- [Executables](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+        echo "- [Test Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+        echo "- [Coverage Reports](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY

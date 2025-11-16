@@ -1,7 +1,6 @@
 # Python project configuration
 
 [tool.ruff]
-# Target Python 3.13
 target-version = "py313"
 line-length = 100
 
@@ -18,12 +17,10 @@ lint.select = [
     "SIM", # flake8-simplify
 ]
 
-# Ignore specific rules
 lint.ignore = [
-    "E501",  # Line too long (handled by formatter)
+    "E501", # Line too long (handled by formatter)
 ]
 
-# Exclude directories
 exclude = [
     ".git",
     ".bazel*",
@@ -38,7 +35,5 @@ exclude = [
 known-first-party = ["ground_control", "onboard"]
 
 [tool.ruff.format]
-# Use double quotes for strings
 quote-style = "double"
-# Indent with spaces
 indent-style = "space"

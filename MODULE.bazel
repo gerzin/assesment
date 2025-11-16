@@ -21,7 +21,6 @@ python.toolchain(
     python_version = "3.13",
 )
 
-# Use rules_uv for dependency management
 uv = use_extension("@rules_uv//uv:extensions.bzl", "uv")
 uv.pip_compile(
     name = "uv_python",

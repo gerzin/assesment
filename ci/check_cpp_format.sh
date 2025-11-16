@@ -22,7 +22,6 @@ if [ -z "$CPP_FILES" ]; then
     exit 0
 fi
 
-# Check if clang-format is installed
 if ! command -v clang-format &> /dev/null; then
     echo "WARNING: clang-format not found. Skipping C++ formatting check."
     echo "Install with: sudo apt-get install clang-format"

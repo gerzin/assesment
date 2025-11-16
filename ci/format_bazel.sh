@@ -19,11 +19,8 @@ if [ -z "$BAZEL_FILES" ]; then
     exit 0
 fi
 
-# Check if buildifier is installed
 if ! command -v buildifier &> /dev/null; then
     echo "ERROR: buildifier not found"
-    echo "Install with: go install github.com/bazelbuild/buildtools/buildifier@latest"
-    echo "Or download from: https://github.com/bazelbuild/buildtools/releases"
     exit 1
 fi
 

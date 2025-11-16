@@ -1,4 +1,4 @@
-load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "argparse",
@@ -6,11 +6,4 @@ cc_library(
     includes = ["include"],
     strip_include_prefix = "include",
     visibility = ["//visibility:public"],
-)
-
-cc_binary(
-    name = "test_argparse",
-    srcs = ["test_argparse.cpp"],
-    copts = ["-std=c++23"],
-    deps = [":argparse"],
 )
