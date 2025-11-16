@@ -8,5 +8,5 @@ py_test(
         "test_shared_lib.py",
     ],
     data = ["//onboard:libonboard.so"],
-    deps = ["//ground_control:onboard_lib_py"],
+    deps = ["//ground_control:onboard_client"],
 )

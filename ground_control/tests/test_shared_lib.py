@@ -5,7 +5,7 @@ Tests the Python-C++ interface via ctypes.
 
 import unittest
 
-from ground_control.onboard_lib import OnboardLib
+from ground_control.onboard import OnboardLib
 
 
 class TestOnboardLib(unittest.TestCase):

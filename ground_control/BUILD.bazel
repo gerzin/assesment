@@ -1,13 +1,20 @@
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
 py_library(
-    name = "onboard_lib_py",
+    name = "onboard_client",
     srcs = [
-        "__init__.py",
-        "onboard_lib.py",
+        "onboard/__init__.py",
+        "onboard/client.py",
     ],
     visibility = ["//visibility:public"],
     deps = [],
+)
+
+py_library(
+    name = "ground_control_lib",
+    srcs = ["__init__.py"],
+    visibility = ["//visibility:public"],
+    deps = [":onboard_client"],
 )
 
 py_binary(
@@ -15,5 +22,5 @@ py_binary(
     srcs = ["main.py"],
     data = ["//onboard:libonboard.so"],
     main = "main.py",
-    deps = [":onboard_lib_py"],
+    deps = [":ground_control_lib"],
 )
