@@ -21,6 +21,14 @@ python.toolchain(
     python_version = "3.13",
 )
 
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "pypi",
+    python_version = "3.13",
+    requirements_lock = "//ground_control:requirements_lock.txt",
+)
+use_repo(pip, "pypi")
+
 uv = use_extension("@rules_uv//uv:extensions.bzl", "uv")
 uv.pip_compile(
     name = "uv_python",

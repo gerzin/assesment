@@ -5,8 +5,17 @@ py_test(
     size = "small",
     srcs = [
         "__init__.py",
+        "conftest.py",
+        "run_pytest.py",
         "test_shared_lib.py",
     ],
-    data = ["//onboard:libonboard.so"],
-    deps = ["//ground_control:onboard_client"],
+    data = [
+        "//ground_control:pytest.ini",
+        "//onboard:libonboard.so",
+    ],
+    main = "run_pytest.py",
+    deps = [
+        "//ground_control:onboard_client",
+        "@pypi//pytest",
+    ],
 )
