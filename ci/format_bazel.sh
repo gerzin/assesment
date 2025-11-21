@@ -3,9 +3,10 @@
 
 set -e
 
-echo "=========================================="
-echo "Formatting Bazel Files"
-echo "=========================================="
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
+print_header "Formatting Bazel Files"
 echo ""
 
 # Find all Bazel files
@@ -31,6 +32,4 @@ for file in $BAZEL_FILES; do
 done
 
 echo ""
-echo "=========================================="
-echo "Bazel files formatted successfully"
-echo "=========================================="
+print_success "Bazel files formatted successfully"

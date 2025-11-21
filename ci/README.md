@@ -117,6 +117,8 @@ The CI pipeline is automated via GitHub Actions (`.github/workflows/ci.yml`).
 ### Build & Test
 - Bazel (managed via bazelisk)
 - Python 3.13
+- pytest (for Python tests)
+- Google Test (for C++ tests)
 - GCC with C++23 support
 
 ## Bazel Benefits for CI

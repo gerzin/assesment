@@ -3,9 +3,10 @@
 
 set -e
 
-echo "=========================================="
-echo "Checking C++ Code Formatting"
-echo "=========================================="
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
+print_header "Checking C++ Code Formatting"
 echo ""
 
 # Find all C++ files (exclude third_party, bazel-*, and other specified directories)
@@ -45,14 +46,10 @@ done
 
 echo ""
 if [ $NEEDS_FORMAT -eq 1 ]; then
-    echo "=========================================="
-    echo "ERROR: Some files need formatting"
-    echo "=========================================="
+    print_error "Some files need formatting"
     echo ""
     echo "To fix, run: ci/format_cpp.sh"
     exit 1
 else
-    echo "=========================================="
-    echo "All C++ files are properly formatted"
-    echo "=========================================="
+    print_success "All C++ files are properly formatted"
 fi
