@@ -1,16 +1,41 @@
 load("@rules_python//python:defs.bzl", "py_test")
 
+# Unit tests - fast, no C++ library needed
 py_test(
-    name = "test_shared_lib",
+    name = "unit",
     size = "small",
     srcs = [
         "__init__.py",
         "conftest.py",
         "pytest_runner.py",
-        "test_shared_lib.py",
+        "test_unit.py",
     ],
     args = [
-        "ground_control/tests",
+        "ground_control/tests/test_unit.py",
+        "-v",
+    ],
+    data = [
+        "//ground_control:pytest.ini",
+    ],
+    main = "pytest_runner.py",
+    deps = [
+        "//ground_control:onboard_client",
+        "@pypi//pytest",
+    ],
+)
+
+# Integration tests - require C++ library
+py_test(
+    name = "integration",
+    size = "small",
+    srcs = [
+        "__init__.py",
+        "conftest.py",
+        "pytest_runner.py",
+        "test_integration.py",
+    ],
+    args = [
+        "ground_control/tests/test_integration.py",
         "-v",
     ],
     data = [
