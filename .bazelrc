@@ -9,3 +9,7 @@ build --jobs=auto
 
 # Compile commands refresh
 build --experimental_convenience_symlinks=normal
+
+# Test output configuration
+test --test_output=errors
+test --test_summary=detailed

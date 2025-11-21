@@ -6,14 +6,18 @@ py_test(
     srcs = [
         "__init__.py",
         "conftest.py",
-        "run_pytest.py",
+        "pytest_runner.py",
         "test_shared_lib.py",
+    ],
+    args = [
+        "ground_control/tests",
+        "-v",
     ],
     data = [
         "//ground_control:pytest.ini",
         "//onboard:libonboard.so",
     ],
-    main = "run_pytest.py",
+    main = "pytest_runner.py",
     deps = [
         "//ground_control:onboard_client",
         "@pypi//pytest",
