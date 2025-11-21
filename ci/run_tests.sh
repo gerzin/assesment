@@ -3,9 +3,11 @@
 
 set -e
 
-echo "=========================================="
-echo "Running All Tests"
-echo "=========================================="
+# Source utility functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
+print_header "Running All Tests"
 echo ""
 
 # Run all tests in the workspace
@@ -15,6 +17,4 @@ echo "Running all tests..."
 bazel test //... --test_output=errors
 
 echo ""
-echo "=========================================="
-echo "All tests passed!"
-echo "=========================================="
+print_success "All tests passed!"

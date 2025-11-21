@@ -3,9 +3,11 @@
 
 set -e
 
-echo "=========================================="
-echo "Formatting Python Code"
-echo "=========================================="
+# Source utility functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
+print_header "Formatting Python Code"
 echo ""
 
 # Check if ruff is installed
@@ -35,6 +37,4 @@ echo "Auto-fixing linting issues..."
 ruff check ground_control --fix --select I,F,E
 
 echo ""
-echo "=========================================="
-echo "Python files formatted successfully"
-echo "=========================================="
+print_success "Python files formatted successfully"

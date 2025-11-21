@@ -6,11 +6,12 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+# Source utility functions
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
 cd "$PROJECT_ROOT"
 
-echo "=========================================="
-echo "Running CI Pipeline"
-echo "=========================================="
+print_header "Running CI Pipeline"
 echo ""
 echo "Project: $(basename "$PROJECT_ROOT")"
 echo "Branch: $(git branch --show-current 2>/dev/null || echo 'unknown')"
@@ -78,9 +79,7 @@ fi
 
 # Summary
 echo ""
-echo "=========================================="
-echo "CI Pipeline Summary"
-echo "=========================================="
+print_header "CI Pipeline Summary"
 echo ""
 
 if [ ${#FAILED_CHECKS[@]} -eq 0 ]; then

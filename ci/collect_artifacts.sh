@@ -7,11 +7,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 ARTIFACTS_DIR="$PROJECT_ROOT/artifacts"
 
+# Source utility functions
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
 cd "$PROJECT_ROOT"
 
-echo "=========================================="
-echo "Collecting Build Artifacts"
-echo "=========================================="
+print_header "Collecting Build Artifacts"
 echo ""
 
 # Clean previous artifacts
@@ -63,9 +64,7 @@ EOF
 
 # Create summary
 echo ""
-echo "=========================================="
-echo "Artifacts collected in: $ARTIFACTS_DIR"
-echo "=========================================="
+print_success "Artifacts collected in: $ARTIFACTS_DIR"
 echo ""
 echo "Contents:"
 echo "  Executables: $(find "$ARTIFACTS_DIR/executables" -type f | wc -l) files"

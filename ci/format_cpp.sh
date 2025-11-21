@@ -3,9 +3,11 @@
 
 set -e
 
-echo "=========================================="
-echo "Formatting C++ Code"
-echo "=========================================="
+# Source utility functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
+print_header "Formatting C++ Code"
 echo ""
 
 # Find all C++ files (exclude third_party, bazel-*, and hidden directories)
@@ -35,6 +37,4 @@ for file in $CPP_FILES; do
 done
 
 echo ""
-echo "=========================================="
-echo "C++ files formatted successfully"
-echo "=========================================="
+print_success "C++ files formatted successfully"

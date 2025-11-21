@@ -3,9 +3,11 @@
 
 set -e
 
-echo "=========================================="
-echo "Checking Python Code Formatting"
-echo "=========================================="
+# Source utility functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
+print_header "Checking Python Code Formatting"
 echo ""
 
 # Find all Python files
@@ -56,6 +58,4 @@ if ! ruff check ground_control --select I,F,E; then
 fi
 
 echo ""
-echo "=========================================="
-echo "All Python files are properly formatted"
-echo "=========================================="
+print_success "All Python files are properly formatted"

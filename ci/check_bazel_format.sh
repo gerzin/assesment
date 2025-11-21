@@ -3,9 +3,11 @@
 
 set -e
 
-echo "=========================================="
-echo "Checking Bazel File Formatting"
-echo "=========================================="
+# Source utility functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils/print_utils.sh"
+
+print_header "Checking Bazel File Formatting"
 echo ""
 
 # Find all Bazel files
@@ -41,14 +43,10 @@ done
 
 echo ""
 if [ $NEEDS_FORMAT -eq 1 ]; then
-    echo "=========================================="
-    echo "ERROR: Some files need formatting"
-    echo "=========================================="
+    print_error "Some files need formatting"
     echo ""
     echo "To fix, run: ci/format_bazel.sh"
     exit 1
 else
-    echo "=========================================="
-    echo "All Bazel files are properly formatted"
-    echo "=========================================="
+    print_success "All Bazel files are properly formatted"
 fi
