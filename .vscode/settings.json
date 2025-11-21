@@ -1,0 +1,19 @@
+{
+    // Python configuration
+    "python.defaultInterpreterPath": "${workspaceFolder}/ground_control/.venv/bin/python",
+    // Pylance settings
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/ground_control",
+        "${workspaceFolder}"
+    ],
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.diagnosticMode": "workspace",
+    // Bazel-specific
+    "files.watcherExclude": {
+        "**/bazel-*": true,
+        "**/.cache": true
+    },
+    "files.exclude": {
+        "bazel-*": true
+    }
+}
