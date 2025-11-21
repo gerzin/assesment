@@ -3,14 +3,12 @@
 
 set -e
 
-# Source utility functions
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/utils/print_utils.sh"
 
 print_header "Checking Python Code Formatting"
 echo ""
 
-# Find all Python files
 PYTHON_FILES=$(find ground_control -type f -name "*.py" ! -path "*/.venv/*" ! -path "*/__pycache__/*")
 
 if [ -z "$PYTHON_FILES" ]; then
@@ -22,11 +20,9 @@ echo "Found Python files to check:"
 echo "$PYTHON_FILES"
 echo ""
 
-# Check if ruff is installed
 if ! command -v ruff &> /dev/null; then
     echo "WARNING: ruff not found. Trying to use from uv..."
 
-    # Try using uv if available
     if command -v uv &> /dev/null; then
         cd ground_control
         echo "Using ruff via uv..."
@@ -40,7 +36,6 @@ if ! command -v ruff &> /dev/null; then
     fi
 fi
 
-# Check formatting and linting
 echo "Checking formatting..."
 if ! ruff format --check ground_control; then
     echo ""
