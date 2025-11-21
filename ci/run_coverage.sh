@@ -3,12 +3,10 @@ set -euo pipefail
 
 echo "Running coverage analysis..."
 
-# Run tests with coverage instrumentation
 bazel coverage //... \
     --combined_report=lcov \
     --instrument_test_targets
 
-# Check if coverage data was generated
 if [ -d "bazel-out/_coverage" ]; then
     echo "Coverage analysis completed successfully"
 
