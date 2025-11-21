@@ -27,15 +27,14 @@ class OnboardLib:
 
         lib_path = os.getenv("ONBOARD_LIB_PATH", lib_path)
 
+        possible_paths = [lib_path] if lib_path else []
+
         if lib_path is None:
             current_dir = Path(__file__).parent
 
             possible_paths = [
-                # In Bazel runfiles, library is at workspace root
                 current_dir.parent.parent / "onboard" / "libonboard.so",
-                # Also try from ground_control/onboard location
                 current_dir.parent / "onboard" / "libonboard.so",
-                # Standard build location
                 current_dir.parent.parent / "bazel-bin" / "onboard" / "libonboard.so",
             ]
 
@@ -47,10 +46,10 @@ class OnboardLib:
                         logger.debug(f"Found onboard library at: {lib_path}")
                     break
 
-            if lib_path is None:
-                raise FileNotFoundError(
-                    f"Shared library not found. Tried: {[str(p) for p in possible_paths]}"
-                )
+        if lib_path is None:
+            raise FileNotFoundError(
+                f"Shared library not found. Tried: {[str(p) for p in possible_paths]}"
+            )
 
         self.lib_path = Path(lib_path)
         if not self.lib_path.exists():
@@ -64,7 +63,7 @@ class OnboardLib:
         self.lib.onboard_free_result.argtypes = [self.CResult]
         self.lib.onboard_free_result.restype = None
 
-    def process_command(self, command: str) -> dict:
+    def process_command(self, command: str) -> dict[str, str | bool]:
         """
         Process a command through the onboard module.
 
@@ -74,11 +73,9 @@ class OnboardLib:
         Returns:
             Dictionary with 'success' (bool), 'response' (str), 'command' (str)
         """
-        result = self.lib.onboard_process_command_c(command.encode("utf-8"))
-
+        result: OnboardLib.CResult = self.lib.onboard_process_command_c(command.encode("utf-8"))
         response = result.data.decode("utf-8") if result.data else ""
         success = result.error_code == self.CErrorCode.C_OK
-
         self.lib.onboard_free_result(result)
 
         return {"success": success, "response": response, "command": command}
