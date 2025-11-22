@@ -1,0 +1,59 @@
+The <COMPANY NAME>
+Assignment
+Scenario.
+
+The <COMPANY NAME> is preparing the next software release for <REDACTED>.
+This release includes updates affecting onboard software (written in C++ for <REDACTED>) and <REDACTED> (Python-based).
+To maintain mission-critical reliability, you are tasked with implementing automated testing and deployment as part of the CI/CD pipeline.
+
+Tasks
+Implement Dummy Components
+
+Write a simple C++ module that simulates onboard communication. For example:
+
+A function that takes a command string and returns an acknowledgement such as "ACK: <command>".
+
+Write a Python script/service that represents the ground-control API. For example:
+
+A function that sends a command to the C++ module (via subprocess or shared library call) and processes the response.
+
+Note: The scripts can be very simple but must demonstrate communication flow (e.g., Python calling the C++ binary).
+
+Unit Tests
+
+Implement unit tests for both components
+
+Include a negative test, e.g., sending an invalid command and verifying the response.
+
+CI/CD Pipeline Automation
+
+C++ is compiled, and unit tests are executed.
+
+Python unit tests run after the build step.
+
+Linting (e.g., flake8 for Python, clang-format for C++) is checked automatically.
+
+Build artefacts (C++ executable, test logs, coverage reports) are stored for inspection.
+
+Repository Setup & Workflow
+
+Propose a branching strategy and PR/code review workflow that would work for a team working on reusable space vehicle software, where reliability is paramount.
+
+Explain how this workflow minimises integration issues and ensures code quality.
+
+Integration Test Scenario
+
+Create one integration test in Python that runs the Python script against the compiled C++ binary.
+
+Simulate a success (e.g., SEND: PING → ACK: PING) and a failure (SEND: INVALID → ERROR).
+
+What the Interviewer Assesses
+Ability to write clear, testable dummy code in two languages (Python and C++).
+
+Capability to design unit + integration tests.
+
+Practical knowledge of CI/CD automation from build to test to deployment.
+
+Software craftsmanship: clean code, linting, branching strategies.
+
+Communication of trade-offs and scalable practices for mission-critical environments.
