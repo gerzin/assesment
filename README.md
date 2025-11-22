@@ -34,7 +34,40 @@ assesment/
 
 ## Quick Start
 
-### Build Everything
+### Using Docker (Recommended for First-Time Users)
+
+The easiest way to build and test the code is using Docker:
+
+```bash
+# Build the Docker image
+docker build -t onboard-system -f docker/Dockerfile .
+
+# Run an interactive shell
+docker run -it onboard-system bash
+
+# Inside the container, you can run:
+bazel build //...                    # Build all targets
+bazel test //...                     # Run all tests
+./ci/run_ci.sh                       # Run full CI pipeline
+bazel run //onboard:onboard_app -- CMD_123
+```
+
+Or run commands directly:
+
+```bash
+# Build everything
+docker run --rm onboard-system bazel build //...
+
+# Run tests
+docker run --rm onboard-system bazel test //...
+
+# Run CI pipeline
+docker run --rm onboard-system ./ci/run_ci.sh
+```
+
+### Local Build (Without Docker)
+
+If you have all prerequisites installed locally:
 
 ```bash
 # Build all targets
