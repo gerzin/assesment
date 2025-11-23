@@ -17,6 +17,7 @@ py_test(
     data = [
         "//ground_control:pytest.ini",
     ],
+    imports = ["../.."],
     main = "pytest_runner.py",
     deps = [
         "//ground_control:onboard_client",
@@ -42,6 +43,7 @@ py_test(
         "//ground_control:pytest.ini",
         "//onboard:libonboard.so",
     ],
+    imports = ["../.."],
     main = "pytest_runner.py",
     deps = [
         "//ground_control:onboard_client",

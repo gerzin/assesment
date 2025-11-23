@@ -1,5 +1,7 @@
 import argparse
 
+from ground_control.onboard.client import OnboardLib
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Ground Control Main Application")
@@ -11,7 +13,15 @@ def parse_args():
 
 
 def main():
-    print("Hello from ground-control!")
+    args = parse_args()
+
+    onboard_lib = OnboardLib()
+    result = onboard_lib.process_command(args.message)
+
+    if result["success"]:
+        print(f"Command processed successfully: {result['response']}")
+    else:
+        print(f"Command processing failed: {result['response']}")
 
 
 if __name__ == "__main__":
