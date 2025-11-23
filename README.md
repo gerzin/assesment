@@ -21,7 +21,7 @@ bazel build //...                    # Build all targets
 bazel test //...                     # Run all tests
 ./ci/run_ci.sh                       # Run full CI pipeline
 bazel run //onboard:onboard_app -- CMD_123 # To run the C++ app
-bazel run //
+bazel run //ground_control:ground_control -- --message 'test@invalid!' # To run the python ground control module
 ```
 
 Or run commands directly:
@@ -33,13 +33,12 @@ docker run --rm onboard-system bazel build //...
 # Run tests
 docker run --rm onboard-system bazel test //...
 
-# Run CI pipeline
-docker run --rm onboard-system ./ci/run_ci.sh
+...
 ```
 
 ### Local Build (Without Docker)
 
-If you have all prerequisites installed locally.
+If you have all prerequisites installed locally you can basically run the same commands that are run in the docker file.
 
 ```bash
 # Build all targets
