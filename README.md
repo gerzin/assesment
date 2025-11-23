@@ -1,13 +1,13 @@
 # Onboard Communication System
 
-A C++23 onboard communication module with Python ground control integration.
+A C++23 onboard communication module with Python ground control integration. The project uses Bazel, pros and cons of the decisions will be discussed in the interview for lack of time on my side to dedicate to the assignment.
 
 
 ## Quick Start
 
 ### Using Docker
 
-The easiest way to build and test the code is using Docker:
+The easiest way to build and test the code is using Docker, so you won't have to install bazel(isk) and other dependencies that you might not have installed.
 
 ```bash
 docker build -t onboard-system -f docker/Dockerfile .
@@ -36,7 +36,7 @@ docker run --rm onboard-system ./ci/run_ci.sh
 
 ### Local Build (Without Docker)
 
-If you have all prerequisites installed locally:
+If you have all prerequisites installed locally.
 
 ```bash
 # Build all targets
