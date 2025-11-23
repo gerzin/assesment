@@ -12,6 +12,7 @@ py_library(
         "onboard/__init__.py",
         "onboard/client.py",
     ],
+    imports = ["."],
     visibility = ["//visibility:public"],
     deps = [],
 )
@@ -19,6 +20,7 @@ py_library(
 py_library(
     name = "ground_control_lib",
     srcs = ["__init__.py"],
+    imports = ["."],
     visibility = ["//visibility:public"],
     deps = [":onboard_client"],
 )
@@ -27,6 +29,10 @@ py_binary(
     name = "ground_control",
     srcs = ["main.py"],
     data = ["//onboard:libonboard.so"],
+    imports = ["."],
     main = "main.py",
-    deps = [":ground_control_lib"],
+    deps = [
+        ":ground_control_lib",
+        ":onboard_client",
+    ],
 )

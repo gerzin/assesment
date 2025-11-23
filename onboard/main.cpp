@@ -6,7 +6,12 @@
 
 int main(int argc, char* argv[]) {
   argparse::ArgumentParser program("onboard_module");
-  program.add_description("Dummy program that returns an ACK with the command received.");
+
+  program.add_description(
+      "Dummy program that returns an ACK with the command received.\n\n"
+      "A command is considered valid if it is non-empty and contains only alphanumeric "
+      "characters");
+
   program.add_argument("command").help("Command to be processed by the onboard module");
 
   try {

@@ -5,6 +5,8 @@ A C++23 onboard communication module with Python ground control integration. The
 
 ## Quick Start
 
+The onboard is a just a dummy C++ module that returns an "ACK: <message>" if the message contained only alphanumeric characters, an error otherwise.
+
 ### Using Docker
 
 The easiest way to build and test the code is using Docker, so you won't have to install bazel(isk) and other dependencies that you might not have installed.
@@ -18,7 +20,8 @@ docker run -it onboard-system bash
 bazel build //...                    # Build all targets
 bazel test //...                     # Run all tests
 ./ci/run_ci.sh                       # Run full CI pipeline
-bazel run //onboard:onboard_app -- CMD_123
+bazel run //onboard:onboard_app -- CMD_123 # To run the C++ app
+bazel run //
 ```
 
 Or run commands directly:
